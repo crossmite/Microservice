@@ -12,7 +12,7 @@ ticket = {
     "passenger_name": "Ormanzhi",
     "passport": "010101.010101",
     "id_ship": 17,
-    "direction": "New York"
+    "direction": "Tokyo"
 }
 
 

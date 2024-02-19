@@ -2,14 +2,13 @@ import os
 import uvicorn
 from fastapi import FastAPI, Depends, HTTPException, status, Form
 from typing import Annotated
-
+from sqlalchemy import null
 from sqlalchemy.orm import Session
+from collections import Counter
+from keycloak import KeycloakOpenID
 
 from database import database as database
 from database.database import Ticket
-
-from model.ticket import TicketModel
-from keycloak import KeycloakOpenID
 
 app = FastAPI()
 database.Base.metadata.create_all(bind=database.engine)
@@ -24,6 +23,7 @@ keycloak_openid = KeycloakOpenID(server_url=KEYCLOAK_URL,
                                   client_id=KEYCLOAK_CLIENT_ID,
                                   realm_name=KEYCLOAK_REALM,
                                   client_secret_key=KEYCLOAK_CLIENT_SECRET)
+
 
 def get_db():
     db = database.SessionLocal()
@@ -61,72 +61,38 @@ def check_user_roles():
     except Exception as e:
         raise HTTPException(status_code=401, detail="Invalid token or access denied")
 
+
+
 @app.get("/health", status_code=status.HTTP_200_OK)
 async def statistics_alive():
-    if (check_user_roles()):
-        return {'message': 'service is active'}
-    else:
-        return "Wrong JWT Token"
+    return {'message': 'service alive'}
 
 
-@app.get("/get_tickets")
-async def get_tickets(db: db_dependency):
+@app.get("get_statistics")
+async def get_statistics(db: db_dependency):
     if (check_user_roles()):
         try:
-            result = db.query(Ticket).limit(100).all()
-            return result
-        except Exception as e:
-            return "Cant access database!"
-    else:
-        return "Wrong JWT Token"
+            tickets = db.query(Ticket).limit(100).all()
+            directions_counter = Counter([ticket.direction for ticket in tickets])
+            most_common_directions = directions_counter.most_common()
 
+            # Количество уникальных пассажиров (по паспортам)
+            unique_passengers = len(set([ticket.passport for ticket in tickets]))
 
+            # Самые частые пассажиры (по имени)
+            passenger_counter = Counter([ticket.passenger_name for ticket in tickets])
+            most_frequent_passengers = passenger_counter.most_common(3)  # Топ-3 пассажира
 
-@app.get("/get_ticket_by_id")
-async def get_ticket_by_id(ticket_id: int, db: db_dependency):
-    if (check_user_roles()):
-        try:
-            result = db.query(Ticket).filter(Ticket.id == ticket_id).first()
-            return result
-        except Exception as e:
-            raise HTTPException(status_code=404, detail="Ticket not found")
-        return result
-    else:
-        return "Wrong JWT Token"
-
-
-
-@app.post("/add_ticket")
-async def add_ticket(ticket: TicketModel, db: db_dependency):
-    if (check_user_roles()):
-        ticket_db = Ticket(passenger_name=ticket.passenger_name,
-                           passport=ticket.passport,
-                           id_ship=ticket.id_ship,
-                           direction=ticket.direction)
-        try:
-            db.add(ticket_db)
-            db.commit()
-            db.refresh(ticket_db)
-            return "Success"
+            # Формирование ответа
+            result = {
+                "most_common_directions": most_common_directions,
+                "unique_passengers": unique_passengers,
+                "most_frequent_passengers": most_frequent_passengers
+            }
         except Exception:
-            return "cant add ticket"
+            return "cant access database!"
     else:
         return "Wrong JWT Token"
-
-
-
-@app.delete("/delete_ticket")
-async def delete_ticket(ticket_id: int, db: db_dependency):
-    if (check_user_roles()):
-        try:
-            ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
-            db.delete(ticket)
-            return "Success"
-        except Exception as e:
-            return "cant find ticket"
-    else:
-        return "Wrong JWT Token"
-
 
 
 if __name__ == "__main__":
