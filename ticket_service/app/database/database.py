@@ -11,11 +11,10 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 class Ticket(Base):
-    __tablename__ = 'port'
+    __tablename__ = 'ship'
 
     id = Column(Integer, primary_key=True, index=True)
     passenger_name = Column(String, nullable=False)
     passport = Column(String, nullable=False)
     id_ship = Column(Integer, nullable=False)
     direction = Column(String, nullable=False)
-
