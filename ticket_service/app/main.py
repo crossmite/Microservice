@@ -13,7 +13,6 @@ from model.ticket import TicketModel
 app = FastAPI()
 database.Base.metadata.create_all(bind=database.engine)
 
-
 def get_db():
     db = database.SessionLocal()
     try:
@@ -46,14 +45,13 @@ async def get_ticket_by_id(ticket_id: int, db: db_dependency):
         return result
     except Exception as e:
         raise HTTPException(status_code=404, detail="Ticket not found")
-    return result
 
 
 @app.post("/add_ticket")
 async def add_ticket(ticket: TicketModel, db: db_dependency):
     ticket_db = Ticket(passenger_name=ticket.passenger_name,
                        passport=ticket.passport,
-                       id_ship=ticket.id_ship,
+                       id_airplane=ticket.id_airplane,
                        direction=ticket.direction)
     try:
         db.add(ticket_db)
@@ -69,6 +67,7 @@ async def delete_ticket(ticket_id: int, db: db_dependency):
     try:
         ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
         db.delete(ticket)
+        db.commit()
         return "Success"
     except Exception as e:
         return "cant find ticket"
