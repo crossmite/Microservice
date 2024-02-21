@@ -13,7 +13,7 @@ get_ticket_by_id_url = f'{ticket_url}/get_ticket_by_id'
 def check_connect():
     try:
         conn = psycopg2.connect(
-            dbname='TickePort',
+            dbname='ship',
             user='postgres',
             password='password',
             host='localhost',
