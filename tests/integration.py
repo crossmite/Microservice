@@ -9,10 +9,11 @@ statistics_url = 'http://localhost:8001'
 add_ticket_url = f'{ticket_url}/add_ticket'
 get_ticket_by_id_url = f'{ticket_url}/get_ticket_by_id'
 
+
 def check_connect():
     try:
         conn = psycopg2.connect(
-            dbname='TicketPort',
+            dbname='TickePort',
             user='postgres',
             password='password',
             host='localhost',
