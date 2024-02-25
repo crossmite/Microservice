@@ -11,7 +11,7 @@ from database import database as database
 from database.database import Ticket
 
 app = FastAPI()
-database.Base.metadata.create_all(bind=database.engine)
+database.Base.metadata.crpeate_all(bind=database.engine)
 
 
 def get_db():

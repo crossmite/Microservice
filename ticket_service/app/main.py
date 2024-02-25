@@ -51,7 +51,7 @@ async def get_ticket_by_id(ticket_id: int, db: db_dependency):
 async def add_ticket(ticket: TicketModel, db: db_dependency):
     ticket_db = Ticket(passenger_name=ticket.passenger_name,
                        passport=ticket.passport,
-                       id_airplane=ticket.id_airplane,
+                       id_ship=ticket.id_ship,
                        direction=ticket.direction)
     try:
         db.add(ticket_db)
