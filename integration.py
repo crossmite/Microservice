@@ -40,11 +40,11 @@ class TestIntegration(unittest.TestCase):
 
     def test_roulet_service_connection(self):
         r = asyncio.run(doc1())
-        self.assertEqual(r, {'message': 'service is active'})
+        self.assertEqual(r, {'message': 'service alive'})
 
     def test_user_service_connection(self):
         r = asyncio.run(doc2())
-        self.assertEqual(r, {'message': 'service is active'})
+        self.assertEqual(r, {'message': 'service alive'})
 
 
 if __name__ == '__main__':
