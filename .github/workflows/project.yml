@@ -28,7 +28,7 @@ jobs:
 
 
       - name: Run integration test
-        run: python tests/integration.py
+        run: python integration.py
 
 
       - name: Run component test
