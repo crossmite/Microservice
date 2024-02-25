@@ -21,7 +21,7 @@ jobs:
           sudo apt update
           sudo apt install -y python3-pip
           pip install psycopg2-binary
-          pip install --no--cache-dir --upgrade -r statistics_service/requirements.txt
+          pip install --no-cache-dir --upgrade -r statistics_service/requirements.txt
 
       - name: Prepare for tests (compose up)
         run: docker compose up -d --build
