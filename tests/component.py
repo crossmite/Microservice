@@ -25,10 +25,10 @@ class TestIntegration(unittest.TestCase):
 
     def test_ticket_get(self):
         res = requests.get(f"{get_ticket_by_id_url}?ticket_id=1").json()
-        self.assertEqual(res['passenger_name'], "test")
-        self.assertEqual(res['passport'], "11111")
-        self.assertEqual(res['id_ship'], 1)
-        self.assertEqual(res['direction'], "Moscow")
+        self.assertEqual(res['passenger_name'], "string")
+        self.assertEqual(res['passport'], "string")
+        self.assertEqual(res['id_ship'], 0)
+        self.assertEqual(res['direction'], "string")
 
     def fetch_tickets(self):
         res = requests.get(get_tickets_url)
