@@ -47,5 +47,6 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(r, {'message': 'service alive'})
 
 
+
 if __name__ == '__main__':
     unittest.main()
