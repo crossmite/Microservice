@@ -19,18 +19,18 @@ ticket = {
 class TestIntegration(unittest.TestCase):
     # CMD: python tests/integration.py
 
-    def add_ticket(self):
+    def test1_add_ticket(self):
         res = requests.post(add_ticket_url, json=ticket)
-        self.assertEqual(res, "Success")
+        self.assertEqual(res.status_code, 200)
 
-    def test_ticket_get(self):
+    def test2_ticket_get(self):
         res = requests.get(f"{get_ticket_by_id_url}?ticket_id=1").json()
         self.assertEqual(res['passenger_name'], "string")
         self.assertEqual(res['passport'], "string")
         self.assertEqual(res['id_ship'], 0)
         self.assertEqual(res['direction'], "string")
 
-    def fetch_tickets(self):
+    def test3_fetch_tickets(self):
         res = requests.get(get_tickets_url)
         self.assertTrue(res != "Cant access database!")
 
