@@ -35,5 +35,6 @@ class TestIntegration(unittest.TestCase):
         self.assertTrue(res != "Cant access database!")
 
 
+
 if __name__ == '__main__':
     unittest.main()
