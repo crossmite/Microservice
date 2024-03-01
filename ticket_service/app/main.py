@@ -48,6 +48,7 @@ async def get_ticket_by_id(ticket_id: int, db: db_dependency):
         raise HTTPException(status_code=404, detail="Ticket not found")
 
 
+
 @app.post("/add_ticket")
 async def add_ticket(ticket: TicketModel, db: db_dependency):
     ticket_db = Ticket(passenger_name=ticket.passenger_name,
