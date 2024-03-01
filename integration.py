@@ -38,11 +38,11 @@ class TestIntegration(unittest.TestCase):
         sleep(5)
         self.assertEqual(check_connect(), True)
 
-    def test_roulet_service_connection(self):
+    def test_statistics_service_connection(self):
         r = asyncio.run(doc1())
         self.assertEqual(r, {'message': 'service alive'})
 
-    def test_user_service_connection(self):
+    def test_ticket_service_connection(self):
         r = asyncio.run(doc2())
         self.assertEqual(r, {'message': 'service alive'})
 
