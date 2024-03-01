@@ -38,6 +38,7 @@ async def get_tickets(db: db_dependency):
         return "Cant access database!"
 
 
+
 @app.get("/get_ticket_by_id")
 async def get_ticket_by_id(ticket_id: int, db: db_dependency):
     try:
